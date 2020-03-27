@@ -1,0 +1,8 @@
+{
+  "appId": "io.ionic.starter",
+  "appName": "learning-platform",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "cordova": {}
+}
