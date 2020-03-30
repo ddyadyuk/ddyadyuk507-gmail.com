@@ -1,5 +1,5 @@
 <ion-header>
-    <ion-grid *ngIf="true">
+    <ion-grid *ngIf="" >
         <ion-row>
             <ion-col offset-md="2" size-md="1">
                 <ion-item lines="none"
@@ -52,8 +52,9 @@
 
 <ion-content>
     <ion-grid>
-        <ion-row>
-            <ion-col size-md="8" offset-md="2">
+        <ion-row *ngFor="let course of courses">
+            <ion-col offset-md="2" size-md="8">
+
             </ion-col>
         </ion-row>
     </ion-grid>
