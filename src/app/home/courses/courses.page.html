@@ -1,61 +1,21 @@
 <ion-header>
-    <ion-grid *ngIf="" >
-        <ion-row>
-            <ion-col offset-md="2" size-md="1">
-                <ion-item lines="none"
-                          color="primary"
-                          class="toolbar-element ion-text-center"
-                          routerLink="/home">
-                    <ion-label>LOGO</ion-label>
-                </ion-item>
-            </ion-col>
-            <ion-col size-md="1">
-                <ion-item
-                        button
-                        lines="none"
-                        class="toolbar-element"
-                        routerLink="/home/courses">
-                    <ion-icon
-                            size="small"
-                            name="apps"></ion-icon>
-                    <ion-label>
-                        Categories
-                    </ion-label>
-                </ion-item>
-            </ion-col>
-            <ion-col size-md="4">
-                <ion-searchbar></ion-searchbar>
-            </ion-col>
-            <ion-col size-md="1">
-                <ion-item
-                        button
-                        lines="none"
-                        class="ion-text-center toolbar-element">
-                    <ion-label>
-                        My courses
-                    </ion-label>
-                </ion-item>
-            </ion-col>
-            <ion-col size-md="1">
-                <ion-item
-                        lines="none">
-                    <ion-avatar>
-                        <ion-img
-                                src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
-                        </ion-img>
-                    </ion-avatar>
-                </ion-item>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+    </ion-toolbar>
 </ion-header>
-
 <ion-content>
-    <ion-grid>
-        <ion-row *ngFor="let course of courses">
-            <ion-col offset-md="2" size-md="8">
-
-            </ion-col>
-        </ion-row>
-    </ion-grid>
+    <ion-card *ngFor="let course of courses">
+        <ion-card-header class="ion-no-padding">
+            <ion-img [src]="course.imgUrl"></ion-img>
+            <ion-card-subtitle>
+                {{course.category | uppercase}}
+            </ion-card-subtitle>
+            <ion-card-title> {{course.title}}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            {{course.description}}
+        </ion-card-content>
+    </ion-card>
 </ion-content>
