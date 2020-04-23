@@ -7,7 +7,6 @@ import {IonicModule} from '@ionic/angular';
 import {CoursesPageRoutingModule} from './courses-routing.module';
 
 import {CoursesPage} from './courses.page';
-import {HomePageModule} from '../home.module';
 
 @NgModule({
     imports: [
