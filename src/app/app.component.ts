@@ -9,7 +9,9 @@ import {StatusBar} from '@ionic-native/status-bar/ngx';
     templateUrl: 'app.component.html',
     styleUrls: ['app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+
+    isPhone = false;
 
     constructor(
         private platform: Platform,
@@ -25,5 +27,14 @@ export class AppComponent {
             this.splashScreen.hide();
         });
     }
+
+    ngOnInit(): void {
+        this.isPhone = this.platform.is("mobile");
+    }
+
+    ionViewWillEnter() {
+        this.isPhone = this.platform.is("mobile");
+    }
+
 
 }
