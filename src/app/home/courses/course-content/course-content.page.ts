@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {CourseDTO, CoursesService} from "../courses.service";
+import {CourseDTO, CoursesService} from "../../../services/courses.service";
 import {ActivatedRoute} from "@angular/router";
 import {Platform} from "@ionic/angular";
 
@@ -14,7 +14,8 @@ export class CourseContentPage implements OnInit {
         title: '',
         category: '',
         imgUrl: '',
-        description: ''
+        description: '',
+        creator: null
     };
     courseId: string;
 
@@ -35,6 +36,7 @@ export class CourseContentPage implements OnInit {
                 this.course.category = course['category'];
                 this.course.imgUrl = course['imgUrl'];
                 this.course.description = course['description'];
+                this.course.creator = course['creator'];
             })
         }
     }

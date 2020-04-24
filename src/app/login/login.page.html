@@ -1,0 +1,39 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Register or Login to get access to all courses.</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-col sizeSm="10" offsetSm="1" sizeMd="8" offsetMd="2">
+                <form [formGroup]="loginForm" (submit)="loginUser()">
+
+                    <ion-item>
+                        <ion-label position="floating">Email</ion-label>
+                        <ion-input formControlName="email" type="email"></ion-input>
+                    </ion-item>
+
+                    <ion-item>
+                        <ion-label position="floating">Password</ion-label>
+                        <ion-input formControlName="password" type="password"></ion-input>
+                    </ion-item>
+
+                    <ion-button type="submit" [disabled]="!loginForm.valid">
+                        Login
+                    </ion-button>
+                </form>
+
+                <ion-button (click)="signupUser()" [disabled]="!loginForm.valid" >
+                    Sign up
+                </ion-button>
+
+                <ion-button fill="outline" (click)="forgetPassword()" [disabled]="!loginForm.controls.email.valid">
+                    Change password
+                </ion-button>
+
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
