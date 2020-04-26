@@ -6,7 +6,7 @@
     box-shadow: 3px 0px 38px 1px rgba(0, 0, 0, 0.35);
 
     ion-img {
-      margin-bottom: 5px;
+      margin-bottom: 10px;
     }
 
     ion-card-title {
@@ -30,5 +30,14 @@
       padding: 5px;
       margin-top: 10px;
     }
+
+    ion-img {
+      max-height: 560px;
+      overflow: hidden;
+    }
+  }
+
+  .courseCard:hover {
+    transform: translateY(-3px);
   }
 }

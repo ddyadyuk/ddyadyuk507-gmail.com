@@ -1,6 +1,6 @@
-export class CourseItem {
+export class CourseModule {
     constructor(public id: string,
-                public content: string,
+                public title: string,
                 public courseId: string) {
     }
 

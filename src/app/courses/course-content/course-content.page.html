@@ -1,0 +1,60 @@
+<ion-header *ngIf="isPhone">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-col sizeMd="12">
+                <ion-item>
+                    <h1 class="pageHeader">{{course.title}}</h1>
+                    <ion-buttons slot="end">
+                        <ion-button shape="round" (click)="updateCourse()">
+                            <ion-icon size="large" name="settings"></ion-icon>
+                        </ion-button>
+                    </ion-buttons>
+                </ion-item>
+            </ion-col>
+            <ion-col sizeMd="10" offsetMd="1">
+
+                <!--        Change course content representation-->
+                <ion-card class="courseCard">
+                    <ion-img [src]="course.imgUrl"></ion-img>
+                    <ion-card-header class="ion-no-padding">
+                        <ion-card-title> {{course.title}}</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>
+                        <div>{{course.description}}</div>
+                        <ion-card-subtitle class="ion-text-center">
+                            {{course.category | uppercase}}
+                        </ion-card-subtitle>
+
+                        <div *ngIf="courseModules != null && courseModules.length != 0">
+                            <ion-item lines="none">
+                                <ion-label>Course content:</ion-label>
+                            </ion-item>
+                            <ion-list *ngFor="let module of courseModules">
+                                <ion-item>
+                                    <ion-title color="primary">{{module?.title}}</ion-title>
+                                    <ion-buttons slot="end">
+                                        <ion-button>
+                                            <ion-icon size="large" name="chevron-down"></ion-icon>
+                                        </ion-button>
+                                    </ion-buttons>
+                                </ion-item>
+                            </ion-list>
+                        </div>
+                        <div *ngIf="courseModules == null || courseModules.length == 0">
+                            <ion-item lines="none">
+                                <ion-label>This course have no modules yet.</ion-label>
+                            </ion-item>
+                        </div>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

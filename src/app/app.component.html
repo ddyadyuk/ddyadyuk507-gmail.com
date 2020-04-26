@@ -51,9 +51,9 @@
                                     </li>
                                 </ul>
 
-                                <ul>
+                                <ul *ngIf="isAuthenticated">
                                     <li>
-                                        <ion-button routerLink="/courses/create">
+                                        <ion-button (click)="onCreate()">
                                             <ion-icon name="create"
                                                       size="large"
                                                       color="dark"></ion-icon>

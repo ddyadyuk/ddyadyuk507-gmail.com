@@ -1,0 +1,113 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Create Your own course</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid>
+    <ion-row
+            *ngIf="!isCourseCreated && (courseObservable | async)">
+      <ion-col
+              sizeMd="9"
+              offsetMd="1">
+        <form [formGroup]="courseCreationForm" (submit)="createCourse()">
+          <ion-item>
+            <ion-label position="floating">Course Working Title</ion-label>
+            <ion-input formControlName="title"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Description</ion-label>
+            <ion-input formControlName="description"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Category</ion-label>
+            <ion-input formControlName="category"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Image Url</ion-label>
+            <ion-input formControlName="imgUrl"></ion-input>
+          </ion-item>
+          <ion-buttons slot="end">
+            <ion-button type="submit" color="primary">
+              Save
+            </ion-button>
+          </ion-buttons>
+          <ion-buttons slot="start">
+            <ion-button (click)="cancelCreation()">
+              Cancel
+            </ion-button>
+          </ion-buttons>
+          <ion-buttons slot="start">
+            <ion-button color="danger" (click)="deleteCourse()">
+              Delete course
+            </ion-button>
+          </ion-buttons>
+        </form>
+      </ion-col>
+    </ion-row>
+    <ion-row
+            *ngIf="isCourseCreated">
+      <ion-col sizeMd="10">
+        <ion-card class="courseCard">
+          <ion-img src="{{course.imgUrl}}"></ion-img>
+          <ion-card-header
+                  class="ion-no-padding">
+            <ion-card-title>
+              {{course.title}}
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <div>{{course.description | slice: 0:80}}</div>
+            <ion-card-subtitle class="ion-text-center">
+              {{course.category | uppercase}}
+            </ion-card-subtitle>
+            <div>
+              <ion-button
+                      shape="round"
+                      color="primary"
+                      (click)="createCourseModule()">
+                Add Course Module
+              </ion-button>
+            </div>
+            <div *ngIf="courseModules != null && courseModules.length != 0">
+              <ion-item lines="none">
+                <ion-label>
+                  Course content:
+                </ion-label>
+              </ion-item>
+              <ion-list *ngFor="let module of courseModules">
+                <ion-item>
+                  <ion-label>{{module?.title}}</ion-label>
+                  <ion-buttons slot="end">
+                    <ion-button>
+                      <ion-icon size="large" color="danger" name="remove-circle"></ion-icon>
+                    </ion-button>
+                    <ion-button>
+                      <ion-icon size="large" name="chevron-down"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </ion-item>
+              </ion-list>
+            </div>
+            <div *ngIf="courseModules == null || courseModules.length == 0">
+              <ion-item lines="none">
+                <ion-label>This course have no modules yet.</ion-label>
+                <ion-buttons slot="end">
+                  <ion-button fill="clear" shape="round" color="success">
+                    <ion-icon size="icon-only" name="add-circle" color="success"></ion-icon>
+                  </ion-button>
+                </ion-buttons>
+              </ion-item>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

@@ -25,6 +25,15 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+/* Quill css styles*/
+@import "~quill/dist/quill.core.css";
+@import "~quill/dist/quill.snow.css";
+
+[contenteditable] {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
 
 .ion-invalid.ion-touched ion-label {
   color: var(--ion-color-danger)

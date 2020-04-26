@@ -30,9 +30,11 @@
       padding: 5px;
       margin-top: 10px;
     }
+
+    ion-img {
+      max-height: 360px;
+      overflow: hidden;
+    }
   }
 
-  .courseCard:hover {
-    transform: translateY(-3px);
-  }
 }

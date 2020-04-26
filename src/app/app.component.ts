@@ -5,6 +5,8 @@ import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {FirebaseService} from "./services/firebase.service";
 import {AngularFireAuth} from "@angular/fire/auth";
+import {Router} from "@angular/router";
+import {CourseDTO, CoursesService} from "./services/courses.service";
 
 @Component({
     selector: 'app-root',
@@ -22,7 +24,9 @@ export class AppComponent implements OnInit {
         private statusBar: StatusBar,
         private firebaseService: FirebaseService,
         private auth: AngularFireAuth,
-        private loadingController: LoadingController
+        private loadingController: LoadingController,
+        private router: Router,
+        private coursesService: CoursesService
     ) {
         this.initializeApp();
     }
@@ -68,5 +72,27 @@ export class AppComponent implements OnInit {
         });
 
 
+    }
+
+    onCreate() {
+        let newCoueseId = 'unset';
+
+        const newCourse: CourseDTO = {
+            title: '',
+            description: '',
+            category: '',
+            imgUrl: '',
+            creator: ''
+        };
+
+        this.coursesService.addCourse(newCourse).then(courseData => {
+            console.log("Returned Course Data", courseData.id);
+            newCoueseId = courseData.id;
+            console.log("New Course id", newCoueseId);
+        }).then(() => {
+            this.router.navigateByUrl(`courses/modify/${newCoueseId}`).catch(reason => {
+                console.log("Reason ", reason);
+            });
+        });
     }
 }

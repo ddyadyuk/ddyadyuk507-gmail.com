@@ -9,22 +9,29 @@
     <ion-grid>
         <ion-row>
             <ion-col sizeMd="12">
-                <ion-item>
-                    <h1 class="pageHeader">{{course.title}}</h1>
+                <ion-item lines="">
+                    <h1 class="pageHeader">Watch our latest courses</h1>
                 </ion-item>
             </ion-col>
         </ion-row>
         <ion-row>
-            <ion-col sizeMd="5">
-
-                <!--        Change course content representation-->
-                <ion-card class="courseCard">
+            <ion-col *ngFor="let course of courses | async"
+                     sizeSm="10"
+                     offsetSm="1"
+                     sizeMd="5"
+                     offsetMd="0.5">
+                <ion-card class="courseCard" tappable (click)="openCourse(course.id)">
                     <ion-img [src]="course.imgUrl"></ion-img>
                     <ion-card-header class="ion-no-padding">
                         <ion-card-title> {{course.title}}</ion-card-title>
+                        <ion-buttons slot="end">
+                            <ion-button>
+                                <ion-icon name="settings" slot="icon-only"></ion-icon>
+                            </ion-button>
+                        </ion-buttons>
                     </ion-card-header>
                     <ion-card-content>
-                        <div>{{course.description}}</div>
+                        <div>{{course.description | slice: 0:100}}</div>
                         <ion-card-subtitle class="ion-text-center">
                             {{course.category | uppercase}}
                         </ion-card-subtitle>

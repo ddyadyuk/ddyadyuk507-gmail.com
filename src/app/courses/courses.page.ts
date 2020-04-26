@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {CoursesService} from '../../services/courses.service';
+import {CourseDTO, CoursesService} from '../services/courses.service';
 import {Platform} from "@ionic/angular";
 import {Router} from "@angular/router";
+import {Observable} from "rxjs";
 
 @Component({
     selector: 'app-courses',
@@ -10,7 +11,7 @@ import {Router} from "@angular/router";
 })
 export class CoursesPage implements OnInit {
 
-    courses: Array<any>;
+    courses: Observable<CourseDTO[]>;
     allCourses: Array<any>;
 
     isLoading = false;
@@ -22,12 +23,7 @@ export class CoursesPage implements OnInit {
         private platform: Platform,
         private  router: Router
     ) {
-        this.coursesService.fetchCourses().subscribe(courses => {
-            console.log('Courses', courses);
-
-            this.allCourses = courses;
-            this.courses = courses;
-        })
+        this.courses = this.coursesService.getCourses();
     }
 
     ngOnInit() {
@@ -38,11 +34,7 @@ export class CoursesPage implements OnInit {
     ionViewWillEnter() {
         this.isPhone = this.platform.is("mobile");
         this.isLoading = true;
-        this.coursesService
-            .fetchCourses()
-            .subscribe(courses => {
-                this.courses = courses
-            });
+        this.courses = this.coursesService.getCourses();
         this.isLoading = false;
     }
 
