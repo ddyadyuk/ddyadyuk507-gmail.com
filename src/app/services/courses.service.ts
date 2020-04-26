@@ -11,6 +11,7 @@ export interface CourseDTO {
     description: string;
     category: string;
     imgUrl: string;
+    creator: any;
 }
 
 @Injectable({
@@ -29,6 +30,8 @@ export class CoursesService {
     }
 
     get courseItems() {
+
+
         return this._course_items.asObservable();
     }
 
@@ -37,13 +40,15 @@ export class CoursesService {
     addCourse(title: string,
               description: string,
               category: string,
-              imgUrl: string) {
+              imgUrl: string,
+              creatorId: any) {
 
         return this.firestore.collection("courses").add({
             title: title,
             description: description,
             category: category,
-            imgUrl: imgUrl
+            imgUrl: imgUrl,
+            creatorId: creatorId
         })
     }
 

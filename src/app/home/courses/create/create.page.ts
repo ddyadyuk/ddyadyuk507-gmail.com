@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {CourseDTO, CoursesService} from "../courses.service";
+import {CourseDTO, CoursesService} from "../../../services/courses.service";
 import {NgForm} from "@angular/forms";
+import {AngularFireAuth} from "@angular/fire/auth";
 
 @Component({
     selector: 'app-create',
@@ -15,10 +16,12 @@ export class CreatePage implements OnInit {
         title: '',
         description: '',
         category: '',
-        imgUrl: ''
+        imgUrl: '',
+        creator: null
     };
 
-    constructor(private coursesService: CoursesService) {
+    constructor(private coursesService: CoursesService,
+                private auth: AngularFireAuth) {
     }
 
     ngOnInit() {
@@ -35,10 +38,21 @@ export class CreatePage implements OnInit {
             return;
         }
 
+        let uid = null;
+
+        this.auth.currentUser.then(userData => {
+            uid = userData.uid;
+        });
+
         this.coursesService.addCourse(courseCreationForm.value.title,
             courseCreationForm.value.description,
             courseCreationForm.value.category,
-            courseCreationForm.value.imgUrl);
+            courseCreationForm.value.imgUrl,
+            uid
+        ).then(respData => {
+            console.log("Creation resp: ", respData);
+        });
+
 
         this.isCourseCreated = true;
     }

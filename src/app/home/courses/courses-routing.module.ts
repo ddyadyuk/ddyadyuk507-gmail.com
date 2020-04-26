@@ -2,11 +2,12 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
 import {CoursesPage} from './courses.page';
+import {AuthGuard} from "../../login/auth.guard";
 
 const routes: Routes = [
     {
         path: '',
-        component: CoursesPage
+        component: CoursesPage,
     },
     {
         path: 'course-content',
@@ -14,7 +15,8 @@ const routes: Routes = [
     },
     {
         path: 'create',
-        loadChildren: () => import('./create/create.module').then(m => m.CreatePageModule)
+        loadChildren: () => import('./create/create.module').then(m => m.CreatePageModule),
+        canActivate: [AuthGuard]
     }
 ];
 

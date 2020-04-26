@@ -60,6 +60,28 @@
                                         </ion-button>
                                     </li>
                                 </ul>
+                                <ul>
+                                    <li>
+                                        <ion-button routerLink="/login"
+                                                    *ngIf="!isAuthenticated">
+                                            <ion-icon
+                                                    name="log-in-outline"
+                                                    size="large"
+                                                    color="dark"
+                                            ></ion-icon>
+                                        </ion-button>
+                                        <ion-button *ngIf="isAuthenticated"
+                                        (click)="logout()">
+                                            <ion-icon
+                                                    name="log-out"
+                                                    size="large"
+                                                    color="dark"
+                                            >
+                                            </ion-icon>
+                                        </ion-button>
+
+                                    </li>
+                                </ul>
                             </ion-toolbar>
                         </ion-list-header>
 
