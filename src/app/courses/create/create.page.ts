@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {CourseDTO, CourseModuleDTO, CoursesService} from "../../services/courses.service";
+import {CourseDTO, CoursesService} from "../../services/courses.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AngularFireAuth} from "@angular/fire/auth";
 import {LoadingController, ModalController} from "@ionic/angular";
@@ -7,6 +7,9 @@ import {ModuleCreateModalPage} from "./module-create-modal/module-create-modal.p
 import {ActivatedRoute, Router} from "@angular/router";
 import {Observable, Subscription} from "rxjs";
 import {map} from "rxjs/operators";
+import {ModuleItemCreateModalPage} from "./module-item-create-modal/module-item-create-modal.page";
+import {ModuleItemModel} from "../../models/module-item.model";
+import {CourseModule} from "../../models/course-module.model";
 
 @Component({
     selector: 'app-create',
@@ -15,9 +18,9 @@ import {map} from "rxjs/operators";
 })
 export class CreatePage implements OnInit, OnDestroy {
     isCourseCreated = false;
+    automaticClose = false;
     courseId = '';
     courseCreationForm: FormGroup;
-
 
     courseObservable: Observable<CourseDTO>;
     course: CourseDTO = {
@@ -25,10 +28,11 @@ export class CreatePage implements OnInit, OnDestroy {
         description: '',
         category: '',
         imgUrl: '',
-        creator: ''
+        creator: '',
     };
 
-    courseModules: CourseModuleDTO[];
+    courseModules: CourseModule[];
+    courseModuleItems: Map<string, ModuleItemModel[]> = new Map<string, ModuleItemModel[]>();
 
     getCourseSub: Subscription;
     getCourseModulesSub: Subscription;
@@ -51,9 +55,20 @@ export class CreatePage implements OnInit, OnDestroy {
                 this.course = course;
                 console.log("Fetched course:", this.course);
 
-                this.getCourseModulesSub = this.coursesService.getCourseModules(this.courseId).subscribe(modules => {
+                this.getCourseModulesSub = this.coursesService.getCourseModules(this.courseId)
+                    .subscribe(modules => {
                     if (modules.length > 0) {
+
                         this.courseModules = modules;
+
+                        this.courseModules[0].open = true;
+
+                        for (let courseModule of this.courseModules) {
+                            this.coursesService.getModuleItems(courseModule.id).subscribe(items => {
+                                this.courseModuleItems.set(courseModule.id, items);
+                                console.log("fetched Items:", items, " Updated Items Map ", this.courseModuleItems);
+                            });
+                        }
                     }
                 })
             }
@@ -65,16 +80,18 @@ export class CreatePage implements OnInit, OnDestroy {
             map(data => {
                 if (data) {
                     return this.formBuilder.group({
-                        title: [data.title != '' ? data.title : '', Validators.compose([Validators.required])],
-                        description: [data.description != '' ? data.description : '', Validators.compose([Validators.required])],
-                        category: [data.category != '' ? data.category : '', Validators.compose([Validators.required])],
-                        imgUrl: [data.imgUrl != '' ? data.imgUrl : '',
+                        title: [data.title != '' ? data.title : 'Some SEO Stuff', Validators.compose([Validators.required])],
+                        description: [data.description != '' ? data.description : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n' +
+                            'tempor incididunt ut labore et dolore magna aliqua.', Validators.compose([Validators.required])],
+                        category: [data.category != '' ? data.category : 'seo', Validators.compose([Validators.required])],
+                        imgUrl: [data.imgUrl != '' ? data.imgUrl : 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRFb460eQtaHu30yk9G3jhIldkewc3T9U5X06m8AggfIfKeJmj_&usqp=CAU',
                             Validators.compose([Validators.required])]
                     });
                 }
             })).subscribe(form => {
             this.courseCreationForm = form;
         });
+
     }
 
     async createCourse() {
@@ -113,6 +130,7 @@ export class CreatePage implements OnInit, OnDestroy {
     async createCourseModule() {
         const moduleCreationModal = await this.modalController.create({
             component: ModuleCreateModalPage,
+            cssClass: 'module-creation-modal',
             componentProps: {
                 courseId: this.courseId
             }
@@ -120,8 +138,8 @@ export class CreatePage implements OnInit, OnDestroy {
 
         moduleCreationModal.present();
 
-        this.getCourseModulesSub = this.coursesService.getCourseModules(this.courseId).subscribe(courses => {
-            this.courseModules = courses;
+        this.getCourseModulesSub = this.coursesService.getCourseModules(this.courseId).subscribe(modules => {
+            this.courseModules = modules;
         });
     }
 
@@ -132,7 +150,6 @@ export class CreatePage implements OnInit, OnDestroy {
     deleteCourse() {
         this.coursesService.deleteCourse(this.courseId).then(() => {
             console.log("Course deleted");
-
             this.coursesService.deleteCourseModules(this.courseId);
         });
 
@@ -150,5 +167,53 @@ export class CreatePage implements OnInit, OnDestroy {
         this.courseFormSub.unsubscribe();
 
         this.isCourseCreated = false;
+    }
+
+    async addModuleItem(id: string) {
+        const moduleItemCreationModal = await this.modalController.create({
+            component: ModuleItemCreateModalPage,
+            cssClass: 'module-item-creation-modal',
+            componentProps: {
+                moduleId: id
+            }
+        });
+
+        moduleItemCreationModal.present();
+    }
+
+    getModuleItems(id) {
+        return this.courseModuleItems.get(id);
+    }
+
+    toggleModule(id, index) {
+
+        this.courseModules.find(module => module.id == id).open = !this.courseModules.find(module => module.id == id).open;
+
+        if (this.courseModules.find(module => module.id == id).open) {
+            this.courseModules.filter(module => module.id != id)
+                .map(module => {
+                    module.open = false;
+                });
+        }
+    }
+
+    toggleModuleItem(moduleId, id, index) {
+
+        this.getModuleItems(moduleId).find(item => item.id == id).open = !this.getModuleItems(moduleId).find(item => item.id == id).open;
+
+        if (this.automaticClose && this.getModuleItems(moduleId).find(item => item.id == id).open) {
+            this.getModuleItems(moduleId).filter(module => module.id != id)
+                .map(item => {
+                    item.open = false;
+                });
+        }
+    }
+
+    updateItemContent(id: any) {
+
+    }
+
+    deleteModuleItem(id: any) {
+
     }
 }

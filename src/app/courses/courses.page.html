@@ -20,7 +20,7 @@
                      offsetSm="1"
                      sizeMd="5"
                      offsetMd="0.5">
-                <ion-card class="courseCard" tappable (click)="openCourse(course.id)">
+                <ion-card *ngIf="course.title != ''" class="courseCard" tappable (click)="openCourse(course.id)">
                     <ion-img [src]="course.imgUrl"></ion-img>
                     <ion-card-header class="ion-no-padding">
                         <ion-card-title> {{course.title}}</ion-card-title>

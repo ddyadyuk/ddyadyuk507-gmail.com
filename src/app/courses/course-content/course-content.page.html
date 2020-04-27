@@ -11,7 +11,7 @@
             <ion-col sizeMd="12">
                 <ion-item>
                     <h1 class="pageHeader">{{course.title}}</h1>
-                    <ion-buttons slot="end">
+                    <ion-buttons *ngIf="isAuthenticated" slot="end">
                         <ion-button shape="round" (click)="updateCourse()">
                             <ion-icon size="large" name="settings"></ion-icon>
                         </ion-button>

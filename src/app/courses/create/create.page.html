@@ -80,18 +80,111 @@
                   Course content:
                 </ion-label>
               </ion-item>
-              <ion-list *ngFor="let module of courseModules">
-                <ion-item>
+              <ion-list *ngFor="let module of courseModules; let i = index"
+                        class="accordion-list ion-no-padding"
+                        lines="none">
+                <ion-item tappable
+                          detail="false"
+                          (click)="toggleModule(module.id, i)"
+                          [ngClass]="{'selection-active': module.open,'section': !module.open}">
                   <ion-label>{{module?.title}}</ion-label>
                   <ion-buttons slot="end">
-                    <ion-button>
-                      <ion-icon size="large" color="danger" name="remove-circle"></ion-icon>
+                    <ion-button
+                            (click)="deleteModule(module.id)"
+                            color="danger"
+                            fill="clear"
+                            shape="round">
+                      <ion-icon
+                              size="icon-only"
+                              color="danger"
+                              name="remove-circle"></ion-icon>
                     </ion-button>
-                    <ion-button>
-                      <ion-icon size="large" name="chevron-down"></ion-icon>
+                    <ion-button
+                            color="success"
+                            fill="clear"
+                            shape="round"
+                            (click)="addModuleItem(module.id)">
+                      <ion-icon
+                              size="icon-only"
+                              color="success"
+                              name="add-circle"></ion-icon>
+                    </ion-button>
+                    <ion-button
+                            *ngIf="!module.open"
+                            fill="clear"
+                            shape="round">
+                      <ion-icon
+                              size="icon-only"
+                              name="chevron-down"></ion-icon>
+                    </ion-button>
+                    <ion-button
+                            *ngIf="module.open"
+                            fill="clear"
+                            shape="round">
+                      <ion-icon
+                              size="icon-only"
+                              name="chevron-up"></ion-icon>
                     </ion-button>
                   </ion-buttons>
                 </ion-item>
+                <div *ngIf="courseModuleItems.entries() && module.open">
+                  <ion-list *ngFor="let item of getModuleItems(module.id); let j = index"
+                            class="child-list ion-no-padding"
+                            lines="none">
+                    <ion-card>
+                      <ion-card-content>
+                        <ion-item tappable
+                                  detail="false"
+                                  (click)="toggleModuleItem(module.id, item.id, j)"
+                                  [ngClass]="{'child-active': item.open,'section': !item.open}">
+                          <ion-label>{{item?.title}}</ion-label>
+                          <ion-buttons slot="end">
+                            <ion-button
+                                    (click)="deleteModuleItem(item.id)"
+                                    color="danger"
+                                    fill="clear"
+                                    shape="round">
+                              <ion-icon
+                                      size="icon-only"
+                                      color="danger"
+                                      name="remove-circle"></ion-icon>
+                            </ion-button>
+                            <ion-button
+                                    color="success"
+                                    fill="clear"
+                                    shape="round"
+                                    (click)="updateItemContent(item.id)">
+                              <ion-icon
+                                      size="icon-only"
+                                      name="pencil">
+                              </ion-icon>
+                            </ion-button>
+                            <ion-button
+                                    *ngIf="!item.open"
+                                    fill="clear"
+                                    shape="round">
+                              <ion-icon
+                                      size="icon-only"
+                                      name="chevron-down"></ion-icon>
+                            </ion-button>
+                            <ion-button
+                                    *ngIf="item.open"
+                                    fill="clear"
+                                    shape="round">
+                              <ion-icon
+                                      size="icon-only"
+                                      name="chevron-up"></ion-icon>
+                            </ion-button>
+                          </ion-buttons>
+                        </ion-item>
+                        <div *ngIf="item.open">
+                          <div [innerHTML]="item.content"></div>
+                        </div>
+                      </ion-card-content>
+                    </ion-card>
+
+                  </ion-list>
+                </div>
               </ion-list>
             </div>
             <div *ngIf="courseModules == null || courseModules.length == 0">

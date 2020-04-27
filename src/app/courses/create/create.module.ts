@@ -8,6 +8,7 @@ import {CreatePageRoutingModule} from './create-routing.module';
 
 import {CreatePage} from './create.page';
 import {ModuleCreateModalPageModule} from "./module-create-modal/module-create-modal.module";
+import {ModuleItemCreateModalPageModule} from "./module-item-create-modal/module-item-create-modal.module";
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import {ModuleCreateModalPageModule} from "./module-create-modal/module-create-m
         ReactiveFormsModule,
         IonicModule,
         CreatePageRoutingModule,
-        ModuleCreateModalPageModule
+        ModuleCreateModalPageModule,
+        ModuleItemCreateModalPageModule
     ],
     declarations: [CreatePage]
 })

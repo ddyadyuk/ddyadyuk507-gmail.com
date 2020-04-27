@@ -1,9 +1,35 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>moduleItemCreateModal</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col sizeSm="10" offsetSm="1" sizeMd="8" offsetMd="2">
+        <form [formGroup]="moduleItemCreationForm" (submit)="save()">
 
+          <ion-item>
+            <ion-label position="floating">Module Tile</ion-label>
+            <ion-input formControlName="title"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Item Position</ion-label>
+            <ion-input formControlName="itemNumber" type="number"></ion-input>
+          </ion-item>
+          <div>
+            <quill-editor formControlName="content"></quill-editor>
+          </div>
+          <ion-buttons slot="start">
+            <ion-button (click)="cancel()" color="primary">
+              Cancel
+            </ion-button>
+          </ion-buttons>
+          <ion-buttons slot="end">
+            <ion-button type="submit"
+                        color="primary"
+                        [disabled]="!moduleItemCreationForm.valid">
+              Save
+            </ion-button>
+          </ion-buttons>
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

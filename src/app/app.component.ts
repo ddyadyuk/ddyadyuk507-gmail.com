@@ -36,17 +36,21 @@ export class AppComponent implements OnInit {
             this.statusBar.styleDefault();
             this.splashScreen.hide();
         });
+
+        this.auth.onAuthStateChanged(user => {
+            if (user) {
+                console.log("We've got a user");
+                this.isAuthenticated = true;
+                this.router.navigate(['/courses']);
+            } else {
+                console.log("There is no  user");
+                this.isAuthenticated = false;
+                this.router.navigate(['/courses']);
+            }
+        })
     }
 
     ngOnInit() {
-        this.auth.onAuthStateChanged(user => {
-            if (user) {
-                this.isAuthenticated = true;
-            } else {
-                this.isAuthenticated = false;
-
-            }
-        });
         this.isPhone = this.platform.is("mobile");
     }
 

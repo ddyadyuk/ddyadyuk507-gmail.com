@@ -4,6 +4,8 @@ import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {AngularFirestore, AngularFirestoreCollection} from "@angular/fire/firestore";
 import {AngularFireAuth} from "@angular/fire/auth";
+import {CourseModule} from "../models/course-module.model";
+import {ModuleItemModel} from "../models/module-item.model";
 
 export interface CourseDTO {
     title: string;
@@ -16,9 +18,16 @@ export interface CourseDTO {
 export interface CourseModuleDTO {
     title: string,
     courseId: string,
-    moduleNumber: number
+    moduleNumber: number,
 }
 
+
+export interface CourseItemDTO {
+    title: string,
+    moduleId: string,
+    content: string
+    itemNumber: number
+}
 @Injectable({
     providedIn: 'root'
 })
@@ -85,7 +94,7 @@ export class CoursesService {
         return this.courseModulesCollection.add({
             title: courseModule.title,
             courseId: courseModule.courseId,
-            moduleNumber: courseModule.moduleNumber
+            moduleNumber: courseModule.moduleNumber,
         });
     }
 
@@ -99,7 +108,8 @@ export class CoursesService {
             .snapshotChanges()
             .pipe(
                 map(actions => actions.map(module => {
-                    const data = module.payload.doc.data() as CourseModuleDTO;
+                    const data = module.payload.doc.data() as CourseModule;
+                    data.open = false;
                     const id = module.payload.doc.id;
                     return {id, ...data}
                 }))
@@ -115,12 +125,47 @@ export class CoursesService {
 
                     return module.payload.doc.id;
                 })))
-            .forEach(moduleId => {
-                this.firestore.doc(`modules/${courseId}`).delete();
+            .forEach(moduleIds => {
+                if (moduleIds.length > 0) {
+                    console.log("ModuleIDs :" + moduleIds + " Deleting module with id: ", moduleIds[moduleIds.length - 1]);
+
+                    this.firestore.doc(`modules/${moduleIds[moduleIds.length - 1]}`).delete();
+                }
             })
     }
 
     deleteModule(id: string) {
+        console.log("deleting single module with id:", id);
         return this.firestore.doc(`modules/${id}`).delete();
+    }
+
+
+    //Course Items logic
+
+    addCourseItem(courseItem: CourseItemDTO) {
+        return this.firestore.collection("module-items").add({
+            moduleId: courseItem.moduleId,
+            content: courseItem.content,
+            itemNumber: courseItem.itemNumber,
+            title: courseItem.title
+        })
+    }
+
+    getModuleItems(moduleId: string) {
+        return this
+            .firestore
+            .collection("module-items", ref => ref
+                .where('moduleId', '==', moduleId)
+                .orderBy('itemNumber')).snapshotChanges()
+            .pipe(
+                map(actions => actions.map(items => {
+                    const data = items.payload.doc.data() as ModuleItemModel;
+                    data.open = false;
+                    console.log("Module items ", data);
+                    const id = items.payload.doc.id;
+
+                    return {id, ...data}
+                }))
+            )
     }
 }

@@ -34,6 +34,21 @@
   user-select: text;
 }
 
+.module-item-creation-modal .modal-wrapper {
+  height: 90%;
+  width: 90%;
+  border-radius: 20px;
+  position: absolute;
+  display: block;
+}
+
+.module-creation-modal .modal-wrapper {
+  height: 60%;
+  width: 60%;
+  border-radius: 10px;
+  position: absolute;
+  display: block;
+}
 
 .ion-invalid.ion-touched ion-label {
   color: var(--ion-color-danger)

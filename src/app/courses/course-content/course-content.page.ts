@@ -3,6 +3,7 @@ import {CourseDTO, CourseModuleDTO, CoursesService} from "../../services/courses
 import {ActivatedRoute, Router} from "@angular/router";
 import {Platform} from "@ionic/angular";
 import {Subscription} from "rxjs";
+import {AngularFireAuth} from "@angular/fire/auth";
 
 @Component({
     selector: 'app-course-content',
@@ -22,6 +23,7 @@ export class CourseContentPage implements OnInit, OnDestroy {
 
     courseId: string;
 
+    isAuthenticated = false;
     isPhone = false;
 
     getCourseSub: Subscription;
@@ -29,7 +31,8 @@ export class CourseContentPage implements OnInit, OnDestroy {
     constructor(private coursesService: CoursesService,
                 private activatedRoute: ActivatedRoute,
                 private platform: Platform,
-                private router: Router) {
+                private router: Router,
+                private auth: AngularFireAuth) {
     }
 
     ngOnInit() {
@@ -44,6 +47,14 @@ export class CourseContentPage implements OnInit, OnDestroy {
                     this.course.imgUrl = course.imgUrl;
                     this.course.description = course.description;
                     this.course.creator = course.creator;
+                }
+            });
+
+            this.auth.onAuthStateChanged(user => {
+                if (user) {
+                    this.isAuthenticated = true;
+                } else {
+                    this.isAuthenticated = false;
                 }
             });
 

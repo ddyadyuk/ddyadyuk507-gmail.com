@@ -16,19 +16,14 @@ export class AuthGuard implements CanActivate {
       next: ActivatedRouteSnapshot,
       state: RouterStateSnapshot): boolean {
 
-    this.auth.currentUser.then(user => {
-      if (user) {
+    if (this.auth.currentUser) {
         console.log("ALLOWED");
         this.isAuthenticated = true;
       } else {
         console.log("NOT ALLOWED");
         this.isAuthenticated = false;
       }
-    });
 
     return this.isAuthenticated;
-
   }
-
-  
 }
