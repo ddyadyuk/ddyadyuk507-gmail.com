@@ -5,6 +5,10 @@
   border-left: 0;
 }
 
+.main-content {
+  position: relative;
+}
+
 ion-menu ion-content {
   --background: var(--ion-item-background, var(--ion-background-color, #fff));
 }
@@ -27,6 +31,7 @@ ion-menu.md ion-list#inbox-list ion-list-header, ion-menu.md ion-note {
 
   min-height: 20px;
 }
+
 ion-menu.md ion-list ion-menu-toggle ion-item ion-icon {
   margin-right: 5px;
 }
@@ -146,5 +151,28 @@ ion-menu.md ion-list#inbox-desktop-list ion-button {
   border-bottom: 1px solid var(--ion-color-step-150, #d7d8da);
   padding-top: 10px;
 }
+
+.categories {
+  z-index: 100;
+  background-color: var(--ion-color-dark);
+  color: var(--ion-color-dark-contrast);
+  position: absolute;
+  left: 90px;
+  top: 10%;
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  ul li {
+    padding-bottom: 1rem;
+  }
+
+  ul li:last-of-type {
+    padding-bottom: 0.2rem;
+  }
+}
+
 
 

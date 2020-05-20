@@ -1,0 +1,45 @@
+<ion-header *ngIf="isPhone">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-col sizeMd="12">
+                <ion-item lines="">
+                    <h1 class="pageHeader">Watch our latest courses</h1>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col *ngFor="let course of (currentCategoryToFilter ? filteredCourses : allCourses)"
+                     size-xs="12"
+                     offset-xs="0"
+                     sizeSm="10"
+                     offsetSm="1"
+                     sizeMd="6"
+                     offset-md="0"
+                     size-lg="6">
+                <ion-card *ngIf="course.title != ''" class="courseCard" tappable (click)="openCourse(course.id)">
+                    <div>
+                        <ion-img [src]="course.imgUrl"></ion-img>
+                    </div>
+                    <ion-card-header class="ion-no-padding">
+                        <ion-card-title><h3> {{course.title}}</h3></ion-card-title>
+                        <ion-buttons slot="end">
+                            <ion-button>
+                                <ion-icon name="settings" slot="icon-only"></ion-icon>
+                            </ion-button>
+                        </ion-buttons>
+                    </ion-card-header>
+                    <ion-card-content class="ion-text-center">
+                        <ion-text>{{course.description | slice: 0:100}}</ion-text>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

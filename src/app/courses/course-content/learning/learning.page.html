@@ -1,0 +1,88 @@
+<ion-header *ngIf="isPhone">
+    <ion-toolbar>
+        <ion-buttons slot="end">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-col size-md="8">
+                <ion-item>
+                    <ion-title>
+                        {{course.title}}
+                    </ion-title>
+                </ion-item>
+                <div [innerHTML]="sanitizedContent">
+                </div>
+            </ion-col>
+            <ion-col
+                    size-md="4">
+                <div *ngIf="courseModules != null && courseModules.length != 0"
+                     class="course-modules-container">
+                    <ion-list *ngFor="let module of courseModules; let i = index"
+                              class="accordion-list ion-no-padding"
+                              lines="none">
+                        <ion-item tappable class="module-item"
+                                  detail="false"
+                                  (click)="toggleModule(module.id, i)"
+                                  [ngClass]="{'section-active': module.open,'section': !module.open}">
+                            <ion-label>{{i + 1 + ". " + module?.title}}</ion-label>
+                        </ion-item>
+                        <div *ngIf="courseModuleItems.entries() && module.open">
+                            <ion-list *ngFor="let item of getModuleItems(module.id); let j = index"
+                                      class="child-list ion-no-padding"
+                                      lines="none">
+                                <ion-item
+                                        button
+                                        class="module-content"
+                                        (click)="transferToLearnPage(item.id)">
+                                    <ion-icon size="small" name="videocam"></ion-icon>
+                                    <ion-label>{{j + 1 + ". " + item?.title}}</ion-label>
+                                </ion-item>
+                            </ion-list>
+                        </div>
+                    </ion-list>
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col
+                    offset-md="1"
+                    size-md="6">
+                <div *ngIf="courseModules == null || courseModules.length == 0">
+                    <ion-item lines="none">
+                        <ion-label>This course have no modules yet.</ion-label>
+                    </ion-item>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid>
+        <ion-row class="course-header-container">
+            <ion-col class="course-data"
+                     size-sm="10"
+                     sizeMd="8">
+                <div class="card-information-container">
+                    <ion-item lines="none"
+                              class="course-title">
+                        <h1>О курсе</h1>
+                    </ion-item>
+                    <ion-item lines="none">
+                        <div>
+                            <p>{{course.description}}</p>
+                        </div>
+                    </ion-item>
+                    <ion-item lines="none">
+                        <ion-badge *ngFor="let category of course.categories"
+                        >#{{category}}</ion-badge>
+                    </ion-item>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

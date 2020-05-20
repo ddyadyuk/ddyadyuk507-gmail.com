@@ -1,10 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 
-import {LoadingController, Platform} from '@ionic/angular';
+import {LoadingController, Platform, PopoverController} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {FirebaseService} from "./services/firebase.service";
 import {AngularFireAuth} from "@angular/fire/auth";
+import {Router} from "@angular/router";
+import {CourseDTO, CoursesService} from "./services/courses.service";
+import {CategoryDTO, CategoryService} from "./services/category.service";
+import {Observable} from "rxjs";
 
 @Component({
     selector: 'app-root',
@@ -16,13 +20,19 @@ export class AppComponent implements OnInit {
     isPhone = false;
     isAuthenticated = false;
 
+    categories: Observable<CategoryDTO[]>
+
     constructor(
         private platform: Platform,
         private splashScreen: SplashScreen,
         private statusBar: StatusBar,
         private firebaseService: FirebaseService,
         private auth: AngularFireAuth,
-        private loadingController: LoadingController
+        private loadingController: LoadingController,
+        private router: Router,
+        private coursesService: CoursesService,
+        private categoryService: CategoryService,
+        private popoverController: PopoverController
     ) {
         this.initializeApp();
     }
@@ -32,17 +42,23 @@ export class AppComponent implements OnInit {
             this.statusBar.styleDefault();
             this.splashScreen.hide();
         });
+
+        this.auth.onAuthStateChanged(user => {
+            if (user) {
+                console.log("We've got a user");
+                this.isAuthenticated = true;
+                this.router.navigate(['/courses']);
+            } else {
+                console.log("There is no  user");
+                this.isAuthenticated = false;
+                this.router.navigate(['/courses']);
+            }
+        })
+
+        this.categories = this.categoryService.categoriesObs;
     }
 
     ngOnInit() {
-        this.auth.onAuthStateChanged(user => {
-            if (user) {
-                this.isAuthenticated = true;
-            } else {
-                this.isAuthenticated = false;
-
-            }
-        });
         this.isPhone = this.platform.is("mobile");
     }
 
@@ -68,5 +84,31 @@ export class AppComponent implements OnInit {
         });
 
 
+    }
+
+    onCreate() {
+        let newCoueseId = 'unset';
+
+        const newCourse: CourseDTO = {
+            title: '',
+            description: '',
+            categories: [],
+            imgUrl: '',
+            creator: ''
+        };
+
+        this.coursesService.addCourse(newCourse).then(courseData => {
+            console.log("Returned Course Data", courseData.id);
+            newCoueseId = courseData.id;
+            console.log("New Course id", newCoueseId);
+        }).then(() => {
+            this.router.navigateByUrl(`courses/modify/${newCoueseId}`).catch(reason => {
+                console.log("Reason ", reason);
+            });
+        });
+    }
+
+    async presentCategories() {
+        this.router.navigateByUrl('categories');
     }
 }

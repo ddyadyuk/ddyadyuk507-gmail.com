@@ -1,0 +1,10 @@
+<ion-content>
+    <ion-item lines="none">
+        <h1 class="pageHeader">Categories</h1>
+    </ion-item>
+    <div>
+        <span *ngFor="let category of categories" (click)="filterCoursesByCategory(category.title)">
+                    #{{category.title}}
+    </span>
+    </div>
+</ion-content>

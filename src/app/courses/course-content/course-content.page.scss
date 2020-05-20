@@ -1,0 +1,121 @@
+.ios, .md {
+
+  ion-content {
+    --background: var(--ion-color-light);
+  }
+
+  //Toggled elements styling
+  .accordion-list {
+    margin-bottom: 4px;
+    --ion-item-background: #fff;
+
+    .section, .section-active {
+      --min-height: 58px;
+    }
+  }
+
+  .section {
+    --ion-item-background: #fff;
+    --ion-item-color: #000;
+  }
+
+  .section-active {
+    border-radius: 20px;
+    --ion-item-background: #ffc400;
+    --ion-item-color: #fff;
+    font-weight: 600;
+  }
+
+  .child-list {
+    padding: 0;
+    margin: 0;
+  }
+
+  //Course header styling
+  .course-header-container {
+    position: relative;
+    background-color: #282828;
+  }
+
+  .card-information-container {
+    position: relative;
+    border: 0.5px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    margin-top: 2%;
+    margin-left: 5%;
+    margin-bottom: 10%;
+  }
+
+  .course-data ion-item {
+    margin-top: 5px;
+    --ion-background-color: #282828;
+    --color: var(--ion-color-dark-contrast);
+    margin-right: 5px;
+    margin-left: 10px;
+
+    ion-badge:nth-child(1n + 2) {
+      margin-left: 5px;
+    }
+  }
+
+  .course-data ion-item:last-child {
+    margin-bottom: 5px;
+  }
+
+  .course-card {
+    position: absolute;
+    right: 5%;
+    top: 2%;
+    min-height: 350px;
+  }
+
+  .course-card ion-img {
+    padding: 2px;
+  }
+
+  .course-card ion-button {
+    margin: 5px;
+    --border-radius: 15px;
+  }
+
+  //Modules styling
+  .module-content {
+    margin-left: 20px;
+  }
+
+  .module-content ion-icon {
+    margin-right: 5px;
+  }
+
+  .course-modules-container {
+    border: 0.5px solid rgba(40, 40, 40, 0.5);
+    border-radius: 20px;
+    margin-left: 5%;
+  }
+
+  .course-modules-container ion-list {
+    margin: 5px 5px 5px 10px;
+  }
+
+  .course-modules-header {
+    margin: 5px 5px 0 10px;
+  }
+
+  .header-buttons-holder {
+    background-color: #282828;
+
+    ion-toolbar {
+      --ion-background-color:  #282828;
+    }
+
+    ion-button {
+      margin-right: 30px;
+      transition: 1s;
+    }
+
+    ion-button:hover {
+      transform: rotate(1turn);
+    }
+  }
+  
+}

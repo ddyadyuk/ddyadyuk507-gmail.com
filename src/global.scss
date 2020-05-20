@@ -25,7 +25,36 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+/* Quill css styles*/
+@import "~quill/dist/quill.core.css";
+@import "~quill/dist/quill.snow.css";
+
+[contenteditable] {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.module-item-creation-modal .modal-wrapper {
+  height: 90%;
+  width: 90%;
+  border-radius: 20px;
+  position: absolute;
+  display: block;
+}
+
+.module-creation-modal .modal-wrapper {
+  height: 60%;
+  width: 60%;
+  border-radius: 10px;
+  position: absolute;
+  display: block;
+}
 
 .ion-invalid.ion-touched ion-label {
   color: var(--ion-color-danger)
+}
+
+body {
+  --ion-font-family: sofia-pro, sans-serif;
+  font-style: normal;
 }
