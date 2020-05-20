@@ -1,12 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 
-import {LoadingController, Platform} from '@ionic/angular';
+import {LoadingController, Platform, PopoverController} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {FirebaseService} from "./services/firebase.service";
 import {AngularFireAuth} from "@angular/fire/auth";
 import {Router} from "@angular/router";
 import {CourseDTO, CoursesService} from "./services/courses.service";
+import {CategoryDTO, CategoryService} from "./services/category.service";
+import {Observable} from "rxjs";
 
 @Component({
     selector: 'app-root',
@@ -18,6 +20,8 @@ export class AppComponent implements OnInit {
     isPhone = false;
     isAuthenticated = false;
 
+    categories: Observable<CategoryDTO[]>
+
     constructor(
         private platform: Platform,
         private splashScreen: SplashScreen,
@@ -26,7 +30,9 @@ export class AppComponent implements OnInit {
         private auth: AngularFireAuth,
         private loadingController: LoadingController,
         private router: Router,
-        private coursesService: CoursesService
+        private coursesService: CoursesService,
+        private categoryService: CategoryService,
+        private popoverController: PopoverController
     ) {
         this.initializeApp();
     }
@@ -48,6 +54,8 @@ export class AppComponent implements OnInit {
                 this.router.navigate(['/courses']);
             }
         })
+
+        this.categories = this.categoryService.categoriesObs;
     }
 
     ngOnInit() {
@@ -84,7 +92,7 @@ export class AppComponent implements OnInit {
         const newCourse: CourseDTO = {
             title: '',
             description: '',
-            category: '',
+            categories: [],
             imgUrl: '',
             creator: ''
         };
@@ -98,5 +106,9 @@ export class AppComponent implements OnInit {
                 console.log("Reason ", reason);
             });
         });
+    }
+
+    async presentCategories() {
+        this.router.navigateByUrl('categories');
     }
 }

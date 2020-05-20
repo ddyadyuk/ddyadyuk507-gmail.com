@@ -1,7 +1,8 @@
 <ion-content>
   <ion-grid>
-    <ion-row>
-      <ion-col sizeSm="10" offsetSm="1" sizeMd="8" offsetMd="2">
+    <ion-row  *ngIf="moduleItemCreationForm || (itemObservable | async)">
+      <ion-col
+              sizeSm="10" offsetSm="1" sizeMd="8" offsetMd="2">
         <form [formGroup]="moduleItemCreationForm" (submit)="save()">
 
           <ion-item>

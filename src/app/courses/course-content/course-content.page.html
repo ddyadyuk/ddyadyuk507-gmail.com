@@ -1,59 +1,119 @@
 <ion-header *ngIf="isPhone">
     <ion-toolbar>
-        <ion-buttons slot="start">
+        <ion-buttons slot="end">
             <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
 <ion-content>
     <ion-grid>
-        <ion-row>
-            <ion-col sizeMd="12">
-                <ion-item>
-                    <h1 class="pageHeader">{{course.title}}</h1>
-                    <ion-buttons *ngIf="isAuthenticated" slot="end">
-                        <ion-button shape="round" (click)="updateCourse()">
-                            <ion-icon size="large" name="settings"></ion-icon>
-                        </ion-button>
-                    </ion-buttons>
-                </ion-item>
+        <ion-row *ngIf="isAuthenticated" class="header-buttons-holder">
+            <ion-col size-md="12">
+                <div>
+                    <ion-toolbar>
+                        <ion-buttons slot="start">
+                            <ion-back-button></ion-back-button>
+                        </ion-buttons>
+                        <ion-buttons slot="end">
+                            <ion-button
+                                    (click)="updateCourse()"
+                                    fill="clear"
+                                    shape="round">
+                                <ion-icon
+                                        size="icon-only"
+                                        color="light"
+                                        name="settings"></ion-icon>
+                            </ion-button>
+                        </ion-buttons>
+                    </ion-toolbar>
+                </div>
             </ion-col>
-            <ion-col sizeMd="10" offsetMd="1">
-
-                <!--        Change course content representation-->
-                <ion-card class="courseCard">
-                    <ion-img [src]="course.imgUrl"></ion-img>
-                    <ion-card-header class="ion-no-padding">
-                        <ion-card-title> {{course.title}}</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                        <div>{{course.description}}</div>
-                        <ion-card-subtitle class="ion-text-center">
-                            {{course.category | uppercase}}
-                        </ion-card-subtitle>
-
-                        <div *ngIf="courseModules != null && courseModules.length != 0">
-                            <ion-item lines="none">
-                                <ion-label>Course content:</ion-label>
-                            </ion-item>
-                            <ion-list *ngFor="let module of courseModules">
-                                <ion-item>
-                                    <ion-title color="primary">{{module?.title}}</ion-title>
-                                    <ion-buttons slot="end">
-                                        <ion-button>
-                                            <ion-icon size="large" name="chevron-down"></ion-icon>
-                                        </ion-button>
-                                    </ion-buttons>
-                                </ion-item>
-                            </ion-list>
+        </ion-row>
+        <ion-row class="course-header-container">
+            <ion-col class="course-data"
+                     size-sm="10"
+                     sizeMd="6">
+                <div class="card-information-container">
+                    <ion-item lines="none"
+                              class="course-title">
+                        <h1>{{course.title}}</h1>
+                    </ion-item>
+                    <ion-item lines="none">
+                        <div>
+                            <p>{{course.description}}</p>
                         </div>
-                        <div *ngIf="courseModules == null || courseModules.length == 0">
-                            <ion-item lines="none">
-                                <ion-label>This course have no modules yet.</ion-label>
-                            </ion-item>
+                    </ion-item>
+                    <ion-item lines="none">
+                        <ion-badge *ngFor="let category of course.categories"
+                        >#{{category}}</ion-badge>
+                    </ion-item>
+                </div>
+            </ion-col>
+            <ion-col class="course-card"
+                     sizeMd="4"
+                     size-sm="10"
+                     offset-sm="1"
+            >
+                <ion-card>
+                    <ion-img [src]="course.imgUrl"></ion-img>
+                    <ion-card-content>
+                        <div>
+                            <ion-button shape="round" color="dark" fill="solid" expand="block">
+                                Go to course
+                            </ion-button>
                         </div>
                     </ion-card-content>
                 </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid>
+        <ion-row>
+            <ion-col
+                    size-md="7">
+                <div *ngIf="courseModules != null && courseModules.length != 0"
+                     class="course-modules-container">
+                    <ion-item lines="none" class="course-modules-header">
+                        <h3>Course content:</h3>
+                    </ion-item>
+                    <ion-list *ngFor="let module of courseModules; let i = index"
+                              class="accordion-list ion-no-padding"
+                              lines="none">
+                        <ion-item tappable class="module-item"
+                                  detail="false"
+                                  (click)="toggleModule(module.id, i)"
+                                  [ngClass]="{'section-active': module.open,'section': !module.open}">
+                            <ion-label>{{i + 1 + ". " + module?.title}}</ion-label>
+                        </ion-item>
+                        <div *ngIf="courseModuleItems.entries() && module.open">
+                            <ion-list *ngFor="let item of getModuleItems(module.id); let j = index"
+                                      class="child-list ion-no-padding"
+                                      lines="none">
+                                <ion-item
+                                        button
+                                        class="module-content"
+                                        (click)="transferToLearnPage(item.id)">
+                                    <ion-icon size="small" name="videocam"></ion-icon>
+                                    <ion-label>{{j + 1 + ". " + item?.title}}</ion-label>
+                                </ion-item>
+                            </ion-list>
+                        </div>
+                    </ion-list>
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col
+                    offset-md="1"
+                    size-md="6">
+                <div *ngIf="courseModules == null || courseModules.length == 0">
+                    <ion-item lines="none">
+                        <ion-label>This course have no modules yet.</ion-label>
+                    </ion-item>
+                </div>
             </ion-col>
         </ion-row>
     </ion-grid>

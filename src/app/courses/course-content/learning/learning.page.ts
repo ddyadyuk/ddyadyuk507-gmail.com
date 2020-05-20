@@ -1,23 +1,22 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {CourseDTO, CoursesService} from "../../services/courses.service";
+import {Component, OnDestroy, OnInit, Sanitizer, SecurityContext} from '@angular/core';
+import {CourseModule} from "../../../models/course-module.model";
+import {CourseDTO, CoursesService} from "../../../services/courses.service";
+import {ModuleItemModel} from "../../../models/module-item.model";
 import {ActivatedRoute, Router} from "@angular/router";
+import {AngularFireAuth} from "@angular/fire/auth";
 import {Platform} from "@ionic/angular";
 import {Subscription} from "rxjs";
-import {AngularFireAuth} from "@angular/fire/auth";
-import {CourseModule} from "../../models/course-module.model";
-import {ModuleItemModel} from "../../models/module-item.model";
-import {CategoryDTO, CategoryService} from "../../services/category.service";
+import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 
 @Component({
-    selector: 'app-course-content',
-    templateUrl: './course-content.page.html',
-    styleUrls: ['./course-content.page.scss'],
+    selector: 'app-learning',
+    templateUrl: './learning.page.html',
+    styleUrls: ['./learning.page.scss'],
 })
-export class CourseContentPage implements OnInit, OnDestroy {
+export class LearningPage implements OnInit, OnDestroy {
 
-    courseModules: CourseModule[];
-    courseModuleItems: Map<string, ModuleItemModel[]> = new Map<string, ModuleItemModel[]>();
-
+    courseId: string;
+    itemId: string;
 
     course: CourseDTO = {
         title: '',
@@ -27,24 +26,37 @@ export class CourseContentPage implements OnInit, OnDestroy {
         creator: null
     };
 
-    courseId: string;
+    courseModules: CourseModule[];
+    courseModuleItems: Map<string, ModuleItemModel[]> = new Map<string, ModuleItemModel[]>();
+    currentItem: ModuleItemModel = {
+        id: '',
+        content: '',
+        itemNumber: null,
+        moduleId: '',
+        open: false,
+        title: ''
+    };
 
-    isAuthenticated = false;
     isPhone = false;
+    isAuthenticated = false;
 
     getCourseSub: Subscription;
     getCourseModulesSub: Subscription;
+    currentItemSub: Subscription;
 
-    constructor(private coursesService: CoursesService,
-                private activatedRoute: ActivatedRoute,
+    sanitizedContent: SafeHtml;
+
+    constructor(private activatedRoute: ActivatedRoute,
+                private coursesService: CoursesService,
+                private auth: AngularFireAuth,
                 private platform: Platform,
                 private router: Router,
-                private auth: AngularFireAuth,
-                private categoryService: CategoryService) {
+                private sanitizer: DomSanitizer) {
     }
 
     ngOnInit() {
         this.courseId = this.activatedRoute.snapshot.paramMap.get('courseId');
+        this.itemId = this.activatedRoute.snapshot.paramMap.get('itemId');
         this.isPhone = this.platform.is("mobile");
 
         if (this.courseId) {
@@ -80,40 +92,17 @@ export class CourseContentPage implements OnInit, OnDestroy {
                 }
             });
 
-            this.getCourseSub = this.coursesService.getCourseModules(this.courseId).subscribe(modules => {
-                this.courseModules = modules;
-                console.log("Course Modules:", this.courseModules);
+            this.coursesService.getItem(this.itemId).subscribe(item => {
+                if (item) {
+                    item.id = this.itemId;
+                    this.currentItem = item;
+                    this.sanitizedContent = this.sanitizer.bypassSecurityTrustHtml(this.currentItem.content);
+                    console.log("Sanitized content", this.sanitizedContent);
+                    console.log("not sanitized content", this.currentItem.content);
+                }
             });
 
-            console.log()
         }
-    }
-
-
-    updateCourse() {
-        this.router.navigateByUrl(`courses/modify/${this.courseId}`);
-    }
-
-    toggleModule(id, index) {
-        this.courseModules.find(module => module.id == id).open = !this.courseModules.find(module => module.id == id).open;
-
-        if (this.courseModules.find(module => module.id == id).open) {
-            this.courseModules.filter(module => module.id != id)
-                .map(module => {
-                    module.open = false;
-                });
-        }
-    }
-
-    updateItemContent(id: any) {
-    }
-
-    deleteModuleItem(id: any) {
-
-    }
-
-    getModuleItems(id) {
-        return this.courseModuleItems.get(id);
     }
 
     ngOnDestroy(): void {
@@ -130,6 +119,21 @@ export class CourseContentPage implements OnInit, OnDestroy {
         };
 
         this.isPhone = false;
+    }
+
+    toggleModule(id, index) {
+        this.courseModules.find(module => module.id == id).open = !this.courseModules.find(module => module.id == id).open;
+
+        if (this.courseModules.find(module => module.id == id).open) {
+            this.courseModules.filter(module => module.id != id)
+                .map(module => {
+                    module.open = false;
+                });
+        }
+    }
+
+    getModuleItems(id) {
+        return this.courseModuleItems.get(id);
     }
 
     transferToLearnPage(itemId: string) {

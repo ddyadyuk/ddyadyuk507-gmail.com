@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {IonicModule} from '@ionic/angular';
 
@@ -17,7 +17,8 @@ import {ModuleItemCreateModalPageModule} from "./module-item-create-modal/module
         IonicModule,
         CreatePageRoutingModule,
         ModuleCreateModalPageModule,
-        ModuleItemCreateModalPageModule
+        ModuleItemCreateModalPageModule,
+        FormsModule
     ],
     declarations: [CreatePage]
 })

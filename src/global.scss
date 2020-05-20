@@ -53,3 +53,8 @@
 .ion-invalid.ion-touched ion-label {
   color: var(--ion-color-danger)
 }
+
+body {
+  --ion-font-family: sofia-pro, sans-serif;
+  font-style: normal;
+}

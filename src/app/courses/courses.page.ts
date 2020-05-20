@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {CourseDTO, CoursesService} from '../services/courses.service';
 import {Platform} from "@ionic/angular";
-import {Router} from "@angular/router";
-import {Observable} from "rxjs";
+import {ActivatedRoute, Router} from "@angular/router";
+import {Category} from "../models/category.model";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'app-courses',
@@ -11,19 +12,22 @@ import {Observable} from "rxjs";
 })
 export class CoursesPage implements OnInit {
 
-    courses: Observable<CourseDTO[]>;
-    allCourses: Array<any>;
+    allCourses: CourseDTO[];
+    filteredCourses: CourseDTO[];
 
     isLoading = false;
     isPhone = false;
 
+    currentCategoryToFilter: string;
+
+    arSub: Subscription;
 
     constructor(
         private coursesService: CoursesService,
         private platform: Platform,
-        private  router: Router
+        private  router: Router,
+        private activatedRoute: ActivatedRoute
     ) {
-        this.courses = this.coursesService.getCourses();
     }
 
     ngOnInit() {
@@ -32,13 +36,37 @@ export class CoursesPage implements OnInit {
     }
 
     ionViewWillEnter() {
+        this.arSub = this.activatedRoute
+            .queryParams
+            .subscribe(params => {
+                // Defaults to 0 if no query param provided.
+                this.currentCategoryToFilter = params['categoryName'];
+            });
+
         this.isPhone = this.platform.is("mobile");
         this.isLoading = true;
-        this.courses = this.coursesService.getCourses();
         this.isLoading = false;
+        this.coursesService.getCourses().subscribe(courses => {
+
+                this.allCourses = courses;
+                if (this.currentCategoryToFilter) {
+                    this.filteredCourses = this.allCourses
+                        .filter(courses => courses.categories.includes(this.currentCategoryToFilter))
+                    console.log("Filtered Courses: ", this.filteredCourses);
+                }
+                console.log("All Courses: ", this.allCourses);
+            }
+        );
+
+
     }
 
     openCourse(id) {
         this.router.navigateByUrl(`courses/${id}`);
+    }
+
+    ionViewWillLeave() {
+        this.arSub.unsubscribe();
+        this.currentCategoryToFilter = '';
     }
 }

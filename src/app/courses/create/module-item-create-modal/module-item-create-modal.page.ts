@@ -1,25 +1,36 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {AlertController, ModalController} from "@ionic/angular";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {CourseItemDTO, CoursesService} from "../../../services/courses.service";
+import {ModuleItemDTO, CoursesService} from "../../../services/courses.service";
+import {ModuleItemModel} from "../../../models/module-item.model";
+import {map} from "rxjs/operators";
+import {Observable, Subscription} from "rxjs";
 
 @Component({
-  selector: 'app-module-item-create-modal',
-  templateUrl: './module-item-create-modal.page.html',
-  styleUrls: ['./module-item-create-modal.page.scss'],
+    selector: 'app-module-item-create-modal',
+    templateUrl: './module-item-create-modal.page.html',
+    styleUrls: ['./module-item-create-modal.page.scss'],
 })
-export class ModuleItemCreateModalPage implements OnInit {
+export class ModuleItemCreateModalPage implements OnInit, OnDestroy {
 
     @Input() moduleId: string;
+    @Input() itemId: string;
 
     moduleItemCreationForm: FormGroup;
 
-    newModuleItem: CourseItemDTO = {
+    //ToDo choose between Model and DTO models.
+    newModuleItem: ModuleItemModel = {
+        id: '',
         title: '',
         itemNumber: null,
         content: '',
-        moduleId: ''
+        moduleId: '',
+        open: false
     };
+
+    itemObservable: Observable<ModuleItemModel>;
+
+    getItemSub: Subscription;
 
     constructor(private modalController: ModalController,
                 private formBuilder: FormBuilder,
@@ -27,17 +38,39 @@ export class ModuleItemCreateModalPage implements OnInit {
                 private alertController: AlertController) {
     }
 
-  ngOnInit() {
-      this.newModuleItem.moduleId = this.moduleId;
-      console.log("Module id:", this.moduleId);
+    ngOnInit() {
+        this.newModuleItem.moduleId = this.moduleId;
+        console.log("Module id:", this.moduleId);
 
-      this.moduleItemCreationForm = this.formBuilder.group({
-          title: ['Reviving something', Validators.compose([Validators.minLength(10), Validators.required])],
-          itemNumber: ['', Validators.compose([Validators.required])],
-          content: ['', Validators.compose([Validators.required])],
-      })
-  }
+        this.itemObservable = this.courseService.getItem(this.itemId);
 
+        this.getItemSub = this.itemObservable
+            .pipe(
+                map(item => {
+
+                    console.log("Founded item: ", item);
+
+                    if (item) {
+                        this.newModuleItem = item;
+                    }
+                    return this.formBuilder.group({
+                        title: [this.newModuleItem.title != ''
+                            ? this.newModuleItem.title
+                            : 'Reviving something',
+                            Validators.compose([Validators.minLength(10), Validators.required])],
+                        itemNumber: [this.newModuleItem.itemNumber != null
+                            ? this.newModuleItem.itemNumber
+                            : '',
+                            Validators.compose([Validators.required])],
+                        content: [this.newModuleItem.content != ''
+                            ? this.newModuleItem.content
+                            : '',
+                            Validators.compose([Validators.required])],
+                    })
+                })).subscribe(form => {
+                this.moduleItemCreationForm = form;
+            });
+    }
 
     cancel() {
         this.modalController.dismiss();
@@ -50,10 +83,18 @@ export class ModuleItemCreateModalPage implements OnInit {
             this.newModuleItem.itemNumber = this.moduleItemCreationForm.value.itemNumber;
             this.newModuleItem.content = this.moduleItemCreationForm.value.content;
 
-            this.courseService.addCourseItem(this.newModuleItem).then(() => {
+            if (this.itemId) {
+                console.log("Updating module item: ", this.itemId);
+                this.courseService.updateModuleItem(this.itemId, this.newModuleItem).then(() => {
                     this.modalController.dismiss();
-                }
-            );
+                });
+            } else {
+                console.log("Adding module item: ", this.itemId);
+                this.courseService.addCourseItem(this.newModuleItem).then(() => {
+                        this.modalController.dismiss();
+                    }
+                );
+            }
         } else {
             this.showBasicAlert("Form data is not valid", "Please fill the form properly.")
         }
@@ -67,5 +108,9 @@ export class ModuleItemCreateModalPage implements OnInit {
         });
 
         alert.present();
+    }
+
+    ngOnDestroy(): void {
+        this.getItemSub.unsubscribe();
     }
 }

@@ -8,7 +8,8 @@
                             <ion-toolbar>
                                 <ul class="menu-actions">
                                     <li>
-                                        <ion-button class="ion-align-items-start" routerLink="">
+                                        <ion-button title="Go to courses page" class="ion-align-items-start"
+                                                    routerLink="">
                                             <ion-icon name="home"
                                                       size="large"
                                                       color="dark">
@@ -17,14 +18,15 @@
                                     </li>
                                     <li>
                                         <!--Add popup with all categories-->
-                                        <ion-button class="ion-align-items-start">
+                                        <ion-button title="Categories" class="ion-align-items-start"
+                                                    (click)="presentCategories()">
                                             <ion-icon name="apps"
                                                       size="large"
                                                       color="dark"></ion-icon>
                                         </ion-button>
                                     </li>
                                     <li>
-                                        <ion-button class="ion-align-items-start">
+                                        <ion-button title="Search" class="ion-align-items-start">
                                             <!--Add modal window with search capability-->
                                             <ion-icon name="search"
                                                       size="large"
@@ -33,7 +35,7 @@
                                         </ion-button>
                                     </li>
                                     <li>
-                                        <ion-button class="ion-align-items-start">
+                                        <ion-button title="My Courses" class="ion-align-items-start">
                                             <ion-icon name="cart"
                                                       size="large"
                                                       color="dark"
@@ -41,7 +43,7 @@
                                         </ion-button>
                                     </li>
                                     <li>
-                                        <ion-button class="ion-align-items-start">
+                                        <ion-button title="Profile" class="ion-align-items-start">
 
                                             <ion-icon name="person"
                                                       size="large"
@@ -53,7 +55,8 @@
 
                                 <ul *ngIf="isAuthenticated">
                                     <li>
-                                        <ion-button (click)="onCreate()">
+                                        <ion-button title="Add new Course"
+                                                    (click)="onCreate()">
                                             <ion-icon name="create"
                                                       size="large"
                                                       color="dark"></ion-icon>
@@ -62,16 +65,20 @@
                                 </ul>
                                 <ul>
                                     <li>
-                                        <ion-button routerLink="/login"
-                                                    *ngIf="!isAuthenticated">
+                                        <ion-button
+                                                title="Login"
+                                                routerLink="/login"
+                                                *ngIf="!isAuthenticated">
                                             <ion-icon
                                                     name="log-in-outline"
                                                     size="large"
                                                     color="dark"
                                             ></ion-icon>
                                         </ion-button>
-                                        <ion-button *ngIf="isAuthenticated"
-                                        (click)="logout()">
+                                        <ion-button
+                                                title="Logout"
+                                                *ngIf="isAuthenticated"
+                                                (click)="logout()">
                                             <ion-icon
                                                     name="log-out"
                                                     size="large"
@@ -84,7 +91,6 @@
                                 </ul>
                             </ion-toolbar>
                         </ion-list-header>
-
                     </ion-list>
                 </div>
                 <div *ngIf="isPhone">
@@ -162,6 +168,13 @@
                 </div>
             </ion-content>
         </ion-menu>
+
+        <div class="categories" *ngIf="isCategoriesPresented">
+            <ul>
+                <li *ngFor="let category of (categories | async)"></li>
+            </ul>
+        </div>
+
         <ion-router-outlet id="main-content"></ion-router-outlet>
     </ion-split-pane>
 </ion-app>

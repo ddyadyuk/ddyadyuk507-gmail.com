@@ -7,6 +7,7 @@
 
     ion-img {
       margin-bottom: 5px;
+
     }
 
     ion-card-title {
@@ -53,6 +54,198 @@
       margin-top: 10px;
       margin-bottom: 10px;
     }
-
   }
+
+  .update-course-form {
+    margin-top: 30px;
+    border-radius: 20px;
+    background-color: rgba(255, 220, 200, 0.3);
+    border: 0.5px solid rgba(255, 255, 255, 0.2);
+    -webkit-box-shadow: 3px 0px 38px 1px rgba(0, 0, 0, 0.35);
+    -moz-box-shadow: 3px 0px 38px 1px rgba(0, 0, 0, 0.35);
+    box-shadow: 3px 0px 38px 1px rgba(0, 0, 0, 0.35);
+
+    ion-item:first-child {
+      margin-top: 15px;
+    }
+
+    ion-item {
+      border-radius: 20px;
+      margin: 5px 15px 20px 15px;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      -webkit-box-shadow: 10px 10px 5px -2px rgba(0, 0, 0, 0.08);
+      -moz-box-shadow: 10px 10px 5px -2px rgba(0, 0, 0, 0.08);
+      box-shadow: 10px 10px 5px -2px rgba(0, 0, 0, 0.08);
+    }
+
+    .main-title {
+      margin-top: 15px;
+    }
+    ion-label {
+      margin-left: 20px;
+      font-size: 1.2em;
+    }
+
+    ion-input {
+      padding-right: 30px;
+      padding-left: 10px;
+    }
+  }
+
+  .button-holder {
+    display: inline;
+    margin-left: 10px;
+
+    ion-button {
+      margin-bottom: 15px;
+    }
+    ion-button:nth-child(2) {
+      margin-left: 10px;
+    }
+
+    ion-button:last-child {
+      right: 25px;
+      position: absolute;
+    }
+  }
+
+    .categories {
+    display: block !important;
+
+    div {
+      min-width: 140px;
+      display: inherit;
+    }
+
+    ion-label {
+      max-width: 100px;
+      font-weight: bold;
+      color: #ffffff;
+      font-size: 0.85em;
+      background-color: var(--ion-color-primary);
+      border-radius: 10px;
+      padding: 7px;
+      margin: 0 !important;
+    }
+
+    ion-select {
+      display: block;
+    }
+  }
+
+  //Toggled elements styling
+  .accordion-list {
+    margin-bottom: 4px;
+    --ion-item-background: #fff;
+
+    .section, .section-active {
+      --min-height: 58px;
+    }
+  }
+
+  .section {
+    --ion-item-background: #fff;
+    --ion-item-color: #000;
+  }
+
+  .section-active {
+    border-radius: 20px;
+    --ion-item-background: #ffc400;
+    --ion-item-color: #fff;
+    font-weight: 600;
+  }
+
+  .child-list {
+    padding: 0;
+    margin: 0;
+  }
+
+  //Course header styling
+  .course-header-container {
+    position: relative;
+    background-color: #282828;
+  }
+
+  .card-information-container {
+    position: relative;
+    border: 0.5px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    margin-top: 3%;
+    margin-left: 5%;
+    margin-bottom: 10%;
+  }
+
+  .course-data ion-item {
+    margin-top: 5px;
+    --ion-background-color: #282828;
+    --color: var(--ion-color-dark-contrast);
+    margin-right: 5px;
+    margin-left: 10px;
+
+    ion-badge:nth-child(1n + 2) {
+      margin-left: 5px;
+    }
+  }
+
+  .course-data ion-item:last-child {
+    margin-bottom: 5px;
+  }
+
+  .course-card {
+    position: absolute;
+    right: 5%;
+    top: 3%;
+    min-height: 350px;
+  }
+
+  .course-card ion-img {
+    padding: 2px;
+  }
+
+  .course-card ion-button {
+    margin: 5px;
+    --border-radius: 15px;
+  }
+
+
+  //Modules styling
+  .module-content {
+    margin-left: 20px;
+  }
+
+  .module-content ion-icon {
+    margin-right: 5px;
+  }
+
+  .course-modules-container {
+    border: 0.5px solid rgba(40, 40, 40, 0.5);
+    border-radius: 20px;
+    margin-left: 5%;
+  }
+
+  .course-modules-container ion-list {
+    margin: 5px 5px 5px 10px;
+  }
+
+  .course-modules-header {
+    margin: 5px 5px 0 10px;
+  }
+
+  .header-buttons-holder {
+    background-color: #282828;
+
+    ion-toolbar {
+      --ion-background-color:  #282828;
+    }
+
+    ion-button {
+      margin-right: 30px;
+      transition: 1s;
+    }
+
+    ion-button:hover {
+      transform: rotate(1turn);
+    }
+  }
+
 }

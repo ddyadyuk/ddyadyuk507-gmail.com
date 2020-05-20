@@ -24,6 +24,10 @@ const routes: Routes = [
         path: 'courses/modify/:courseId',
         loadChildren: () => import('./courses/create/create.module').then(m => m.CreatePageModule),
         canActivate: [AuthGuard]
+    },
+    {
+        path: 'categories',
+        loadChildren: () => import('./categories/categories.module').then(m => m.CategoriesPageModule)
     }
 ];
 

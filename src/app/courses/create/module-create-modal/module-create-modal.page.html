@@ -1,6 +1,6 @@
 <ion-content>
     <ion-grid>
-        <ion-row>
+        <ion-row *ngIf="moduleCreationForm || (moduleObservable | async)">
             <ion-col sizeSm="10" offsetSm="1" sizeMd="8" offsetMd="2">
                 <form [formGroup]="moduleCreationForm" (submit)="save()">
 

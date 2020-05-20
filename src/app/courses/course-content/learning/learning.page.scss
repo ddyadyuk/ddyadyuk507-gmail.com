@@ -34,22 +34,22 @@
   //Course header styling
   .course-header-container {
     position: relative;
-    background-color: #282828;
+    background-color: #f7f8fa;
   }
 
   .card-information-container {
     position: relative;
-    border: 0.5px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
+    width: 100%;
+    border: 0.5px solid rgba(40, 40, 40, 0.4);
+    background-color: #f7f8fa;
     margin-top: 2%;
     margin-left: 5%;
     margin-bottom: 10%;
   }
-
   .course-data ion-item {
     margin-top: 5px;
-    --ion-background-color: #282828;
-    --color: var(--ion-color-dark-contrast);
+    background-color: #f7f8fa;
+    --color: var(--ion-color-light-contrast);
     margin-right: 5px;
     margin-left: 10px;
 
@@ -62,22 +62,6 @@
     margin-bottom: 5px;
   }
 
-  .course-card {
-    position: absolute;
-    right: 5%;
-    top: 2%;
-    min-height: 350px;
-  }
-
-  .course-card ion-img {
-    padding: 2px;
-  }
-
-  .course-card ion-button {
-    margin: 5px;
-    --border-radius: 15px;
-  }
-
   //Modules styling
   .module-content {
     margin-left: 20px;
@@ -88,7 +72,9 @@
   }
 
   .course-modules-container {
-    border: 0.5px solid rgba(40, 40, 40, 0.5);
+    width: 90%;
+    background-color: #f7f8fa;
+    border: 0.5px solid rgba(40, 40, 40, 0.4);
     border-radius: 20px;
     margin-left: 5%;
   }
@@ -117,5 +103,13 @@
       transform: rotate(1turn);
     }
   }
-  
+
+  ::ng-deep .ql-video {
+    height: 550px;
+    width: 100%;
+    border-radius: 15px;
+  }
+
 }
+
+
