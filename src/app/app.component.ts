@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
-import {LoadingController, Platform, PopoverController} from '@ionic/angular';
+import {LoadingController, ModalController, Platform, PopoverController} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {FirebaseService} from "./services/firebase.service";
@@ -9,6 +9,7 @@ import {Router} from "@angular/router";
 import {CourseDTO, CoursesService} from "./services/courses.service";
 import {CategoryDTO, CategoryService} from "./services/category.service";
 import {Observable} from "rxjs";
+import {SearchModalPage} from "./search-modal/search-modal.page";
 
 @Component({
     selector: 'app-root',
@@ -32,7 +33,7 @@ export class AppComponent implements OnInit {
         private router: Router,
         private coursesService: CoursesService,
         private categoryService: CategoryService,
-        private popoverController: PopoverController
+        protected modalController: ModalController
     ) {
         this.initializeApp();
     }
@@ -108,7 +109,17 @@ export class AppComponent implements OnInit {
         });
     }
 
-    async presentCategories() {
+    async onSearch() {
+        const searchModal = await this.modalController.create({
+            component: SearchModalPage,
+            cssClass: 'search-modal'
+        })
+
+        searchModal.present();
+    }
+
+
+    presentCategories() {
         this.router.navigateByUrl('categories');
     }
 }

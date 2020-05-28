@@ -50,6 +50,18 @@
   display: block;
 }
 
+.search-modal .modal-wrapper {
+  background: rgba(255, 255, 255, 0.6);
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  display: block;
+
+  .modal-wrapper .sc-ion-modal-md {
+    width: 100%;
+  }
+}
+
 .ion-invalid.ion-touched ion-label {
   color: var(--ion-color-danger)
 }
