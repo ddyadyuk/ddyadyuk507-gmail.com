@@ -1,0 +1,171 @@
+ion-content {
+  .selectable {
+    width: 100%;
+    margin: 20px 10px 5px 10px;
+    border-bottom: 4px solid black;
+
+    ion-label {
+      font-size: 2.2em;
+    }
+  }
+
+  ion-item-divider {
+    h2 {
+      color: var(--ion-color-dark);
+      font-size: 2em;
+      font-weight: 800;
+    }
+  }
+
+  ion-list {
+    background: rgba(255, 255, 255, 0.1);
+
+    div {
+      margin: 0px 10px 5px 0px;
+
+      ion-item {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        margin-top: 0px;
+        -webkit-box-shadow: 0 4px 8px rgba(0, 30, 84, 0.12);
+        -moz-box-shadow: 0 4px 8px rgba(0, 30, 84, 0.12);
+        box-shadow: 0 4px 8px rgba(0, 30, 84, 0.12);
+
+        div {
+          width: 90%;
+          display: block;
+
+          h4 {
+            color: rgba(18, 24, 27, 1);
+            margin: 20px 0px 10px 0px;
+            font-style: normal;
+            font-size: 1.5em;
+            font-weight: 800;
+            color: var(--ion-color-dark);
+          }
+
+          p {
+            color: rgb(69, 78, 86);
+            margin-top: 10px;
+            font-size: 1.0em;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
+}
+
+::ng-deep ion-content {
+
+  --background: rgba(255, 255, 255, 0.6);
+
+  ion-list {
+    background: rgba(255, 255, 255, 0.1);
+
+
+    ion-item-group {
+      background: rgba(255, 255, 255, 0.1);
+
+      ion-item {
+        background: rgba(255, 255, 255, 0.1);
+        margin: 0px 15px 5px 10px;
+
+        -webkit-box-shadow: 0 4px 8px rgba(0, 30, 84, 0.12);
+        -moz-box-shadow: 0 4px 8px rgba(0, 30, 84, 0.12);
+        box-shadow: 0 4px 8px rgba(0, 30, 84, 0.12);
+      }
+    }
+
+    div {
+      display: block;
+
+      h4 {
+        color: rgba(18, 24, 27, 1);
+        margin: 20px 0px 10px 0px;
+        font-style: normal;
+        font-size: 1.5em;
+        font-weight: 800;
+        color: var(--ion-color-dark);
+      }
+
+      p {
+        color: rgb(69, 78, 86);
+        margin-top: 10px;
+        font-size: 1.0em;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+@media (max-width: 599px) {
+  ion-content {
+    .selectable {
+      width: 100%;
+      margin: 20px 10px 5px 10px;
+      border-bottom: 4px solid black;
+
+      ion-label {
+        font-size: 1em;
+      }
+    }
+
+    ion-item-divider {
+      h2 {
+        color: var(--ion-color-dark);
+        font-size: 1em;
+        font-weight: 700;
+      }
+    }
+
+    ion-list {
+      div {
+        ion-item {
+          div {
+            h4 {
+              font-size: 1.1em;
+            }
+
+            p {
+              font-size: 0.7em;
+              font-weight: 600;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  ::ng-deep ion-content {
+
+    ion-list {
+
+      div {
+        margin-left: 20px;
+
+        h4 {
+          font-size: 1.0em;
+        }
+
+        p {
+          font-size: 0.6em;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}
+
+
+@media (min-width: 600px) {
+}
+
+@media (min-width: 900px) {
+}
+
+@media (min-width: 1200px) {
+}
+
+@media (min-width: 1800px) {
+}

@@ -1,0 +1,46 @@
+<ion-content>
+    <ion-item lines="none" class="ion-text-center">
+        <p>You can search by course name or course category type you interested in</p>
+    </ion-item>
+    <ion-item>
+        <ion-item class="selectable">
+            <ion-label>Tap here to search the course...</ion-label>
+            <ionic-selectable
+                    item-content
+                    debounce="700"
+                    [(ngModel)]="selectedCourse"
+                    itemValueField="id"
+                    itemTextField="name"
+                    [(items)]="courses"
+                    [canSearch]="true"
+                    (onSelect)="onItemSelected($event)"
+                    (onSearch)="searchCourse($event)"
+                    modalCssClass="search-modal"
+                    searchPlaceholder="Type to search">
+
+                <ng-template ionicSelectableItemTemplate let-course="item">
+                    <div>
+                        <h4><span>{{course.title}}</span></h4>
+                        <p>{{course.description | slice: 0:100}}</p>
+                    </div>
+                </ng-template>
+
+                <ng-template ionicSelectableItemIconTemplate let-course="item">
+                </ng-template>
+            </ionic-selectable>
+        </ion-item>
+    </ion-item>
+    <ion-list>
+        <ion-item-divider>
+            <h2>Courses which you may be interested in.</h2>
+        </ion-item-divider>
+        <div *ngFor="let course of previewCourses" (click)="redirectToCourse(course)">
+            <ion-item lines="none">
+                <div>
+                    <h4><span>{{course.title}}</span></h4>
+                    <p>{{course.description | slice: 0:100}}</p>
+                </div>
+            </ion-item>
+        </div>
+    </ion-list>
+</ion-content>

@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {CourseDTO, CoursesService} from '../services/courses.service';
 import {Platform} from "@ionic/angular";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Category} from "../models/category.model";
 import {Subscription} from "rxjs";
 
 @Component({

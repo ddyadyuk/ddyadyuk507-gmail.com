@@ -13,6 +13,9 @@ import {AngularFireModule} from "@angular/fire";
 import {environment} from "../environments/environment";
 import {AngularFireAuthModule} from "@angular/fire/auth";
 import {AngularFirestoreModule} from "@angular/fire/firestore";
+import {IonicSelectableModule} from "ionic-selectable";
+import {SearchModalPage} from "./search-modal/search-modal.page";
+import {SearchModalPageModule} from "./search-modal/search-modal.module";
 
 @NgModule({
     declarations: [AppComponent],
@@ -20,7 +23,8 @@ import {AngularFirestoreModule} from "@angular/fire/firestore";
     imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule,
         AngularFireModule.initializeApp(environment.firebase),
         AngularFirestoreModule,
-        AngularFireAuthModule],
+        AngularFireAuthModule,
+        SearchModalPageModule],
     providers: [
         StatusBar,
         SplashScreen,

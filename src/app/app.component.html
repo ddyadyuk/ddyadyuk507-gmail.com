@@ -26,7 +26,10 @@
                                         </ion-button>
                                     </li>
                                     <li>
-                                        <ion-button title="Search" class="ion-align-items-start">
+                                        <ion-button
+                                                title="Search"
+                                                class="ion-align-items-start"
+                                                (click)="onSearch()">
                                             <!--Add modal window with search capability-->
                                             <ion-icon name="search"
                                                       size="large"
@@ -128,6 +131,7 @@
                             <ion-item
                                     detail="false"
                                     lines="none"
+                                    (click)="onSearch()"
                             >
                                 <!--Add modal window with search capability-->
                                 <ion-icon name="search" size="small"></ion-icon>
@@ -168,13 +172,6 @@
                 </div>
             </ion-content>
         </ion-menu>
-
-        <div class="categories" *ngIf="isCategoriesPresented">
-            <ul>
-                <li *ngFor="let category of (categories | async)"></li>
-            </ul>
-        </div>
-
         <ion-router-outlet id="main-content"></ion-router-outlet>
     </ion-split-pane>
 </ion-app>
