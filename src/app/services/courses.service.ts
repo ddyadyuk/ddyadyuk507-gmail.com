@@ -33,7 +33,7 @@ export interface ModuleItemDTO {
     providedIn: 'root'
 })
 export class CoursesService {
-    courses: Observable<CourseDTO[]>;
+    courses: Observable<any>;
     coursesCollection: AngularFirestoreCollection<CourseDTO>;
     courseModulesCollection: AngularFirestoreCollection<CourseModuleDTO>;
 

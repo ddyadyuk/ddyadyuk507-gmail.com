@@ -6,7 +6,10 @@ import {Subscription} from "rxjs";
 import {AngularFireAuth} from "@angular/fire/auth";
 import {CourseModule} from "../../models/course-module.model";
 import {ModuleItemModel} from "../../models/module-item.model";
-import {CategoryDTO, CategoryService} from "../../services/category.service";
+import {User} from "../../models/user.model";
+import {FirebaseService} from "../../services/firebase.service";
+import {UserCoursesService} from "../../services/user-courses.service";
+import {UserCourses} from "../../models/user-courses.model";
 
 @Component({
     selector: 'app-course-content',
@@ -27,20 +30,27 @@ export class CourseContentPage implements OnInit, OnDestroy {
         creator: null
     };
 
+    userCourses: UserCourses;
+
     courseId: string;
+    userId: string;
 
     isAuthenticated = false;
+    gotWritePermission = false;
     isPhone = false;
+
 
     getCourseSub: Subscription;
     getCourseModulesSub: Subscription;
+    userCoursesSub: Subscription;
 
     constructor(private coursesService: CoursesService,
                 private activatedRoute: ActivatedRoute,
                 private platform: Platform,
                 private router: Router,
                 private auth: AngularFireAuth,
-                private categoryService: CategoryService) {
+                private firebaseService: FirebaseService,
+                private userCoursesService: UserCoursesService) {
     }
 
     ngOnInit() {
@@ -72,20 +82,30 @@ export class CourseContentPage implements OnInit, OnDestroy {
                 }
             });
 
-            this.auth.onAuthStateChanged(user => {
+            this.auth.currentUser.then(user => {
                 if (user) {
+                    let userInformation: User;
+                    this.userId = user.uid;
+
+                    console.log("UserId:", this.userId);
+                    this.firebaseService.getUserInformation(this.userId).subscribe(user => {
+                        userInformation = user
+                        console.log("Current user:", user)
+                        this.gotWritePermission = userInformation.status === "teacher" ? true : false;
+                    });
+
+                    //Getting user Courses
+                    this.userCoursesSub = this.userCoursesService.getUserCourses(this.userId).subscribe(userCourses => {
+                        this.userCourses = userCourses;
+                        console.log("Fetched Courses:", this.userCourses);
+                    })
+
+                    console.log("We've got a user");
                     this.isAuthenticated = true;
                 } else {
                     this.isAuthenticated = false;
                 }
             });
-
-            this.getCourseSub = this.coursesService.getCourseModules(this.courseId).subscribe(modules => {
-                this.courseModules = modules;
-                console.log("Course Modules:", this.courseModules);
-            });
-
-            console.log()
         }
     }
 
@@ -119,8 +139,8 @@ export class CourseContentPage implements OnInit, OnDestroy {
     ngOnDestroy(): void {
 
         this.getCourseSub.unsubscribe();
-        this.getCourseModulesSub.unsubscribe()
-
+        this.getCourseModulesSub.unsubscribe();
+        this.userCoursesSub.unsubscribe();
         this.course = {
             title: '',
             categories: [''],
@@ -133,6 +153,21 @@ export class CourseContentPage implements OnInit, OnDestroy {
     }
 
     transferToLearnPage(itemId: string) {
-        this.router.navigateByUrl(`/courses/${this.courseId}/learning/${itemId}`)
+        if (this.userCourses) {
+            console.log("Before adding userCourses:", this.userCourses.courses);
+
+            //filter current user courses and if there is no current CourseId add it to the list.
+            if (this.userCourses && !this.userCourses.courses.includes(this.courseId)) {
+
+                this.userCourses.courses.push(this.courseId);
+                this.userCoursesService.addCourseToUserList(this.userCourses);
+                console.log("Adding userCourses:", this.userCourses.courses);
+
+            } else {
+                //ToDo present alert.
+            }
+
+            this.router.navigateByUrl(`/courses/${this.courseId}/learning/${itemId}`)
+        }
     }
 }

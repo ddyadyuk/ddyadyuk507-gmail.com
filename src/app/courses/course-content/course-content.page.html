@@ -10,7 +10,7 @@
 </ion-header>
 <ion-content>
     <ion-grid>
-        <ion-row *ngIf="isAuthenticated" class="header-buttons-holder">
+        <ion-row *ngIf="isAuthenticated && gotWritePermission" class="header-buttons-holder">
             <ion-col size-md="12">
                 <div>
                     <ion-toolbar>
@@ -61,8 +61,10 @@
                     <ion-img [src]="course.imgUrl"></ion-img>
                     <ion-card-content>
                         <div>
-                            <ion-button shape="round" color="dark" fill="solid" expand="block">
-                                Go to course
+                            <!--if there is no courses transferToLearnPage will not work-->
+                            <ion-button shape="round" color="dark" fill="solid" expand="block"
+                                        (click)="transferToLearnPage(courseModules[0]?.id)">
+                                Get the course
                             </ion-button>
                         </div>
                     </ion-card-content>
