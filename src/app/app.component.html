@@ -38,7 +38,8 @@
                                         </ion-button>
                                     </li>
                                     <li>
-                                        <ion-button title="My Courses" class="ion-align-items-start">
+                                        <ion-button title="My Courses" class="ion-align-items-start"
+                                                    [routerLink]="['/cart']">
                                             <ion-icon name="cart"
                                                       size="large"
                                                       color="dark"
@@ -56,7 +57,7 @@
                                     </li>
                                 </ul>
 
-                                <ul *ngIf="isAuthenticated">
+                                <ul *ngIf="isAuthenticated && gotWritePermission">
                                     <li>
                                         <ion-button title="Add new Course"
                                                     (click)="onCreate()">
@@ -138,6 +139,7 @@
                                 <ion-label>Search</ion-label>
                             </ion-item>
                             <ion-item
+                                    [routerLink]="['/cart']"
                                     detail="false"
                                     lines="none">
                                 <ion-icon name="cart" size="small"></ion-icon>
@@ -153,7 +155,8 @@
                             </ion-item>
                         </ion-menu-toggle>
                     </ion-list>
-                    <ion-list class="menu-actions">
+                    <ion-list class="menu-actions"
+                              *ngIf="isAuthenticated && gotWritePermission">
                         <ion-menu-toggle autoHide="false">
                             <ion-note>Author Actions</ion-note>
 

@@ -50,8 +50,8 @@ export class SearchModalPage implements OnInit {
 
         const filteredCourses = courses.filter(course => {
             console.log("Filtering by text: ", text)
-            return (course.title.toLowerCase().indexOf(text) !== -1 ||
-                course.categories.indexOf(text) !== -1);
+            return ((course.title.toLowerCase().indexOf(text) !== -1)
+                || (course.categories.filter(category => category.indexOf(text) !== -1).length > 0));
         });
 
         console.log("Filtered Courses: ", filteredCourses)

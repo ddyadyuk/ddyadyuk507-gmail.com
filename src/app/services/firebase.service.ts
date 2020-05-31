@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
 import {AngularFireAuth} from "@angular/fire/auth";
 import {AngularFirestore} from "@angular/fire/firestore";
+import {User} from "../models/user.model";
+import {take} from "rxjs/operators";
 
 @Injectable({
     providedIn: 'root'
@@ -18,7 +20,7 @@ export class FirebaseService {
                 return this.firestore.doc(`users/${data.user.uid}`).set({
                     email: email,
                     display_name: email,
-                    status: 'teacher'
+                    status: 'student'
                 })
             });
     }
@@ -31,17 +33,11 @@ export class FirebaseService {
         return this.angularFireAuth.signOut();
     }
 
-    getUserInformation() {
-        let uid = null;
-
-        this.angularFireAuth.currentUser.then(userData => {
-            uid = userData.uid;
-        });
-
-        return this.firestore.doc(`users/${uid}`).valueChanges();
+    getUserInformation(uid: string) {
+        return this.firestore.doc<User>(`users/${uid}`).valueChanges().pipe(take(1));
     }
 
-    upadateUserName(name) {
+    updateUserName(name) {
         let uid = null;
 
         this.angularFireAuth.currentUser.then(userData => {

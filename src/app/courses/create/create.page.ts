@@ -222,7 +222,6 @@ export class CreatePage implements OnInit, OnDestroy {
         this.categoriesSub.unsubscribe();
 
         this.isCourseCreated = false;
-        this.courseCreationForm.disable();
     }
 
     async addModuleItem(id: string) {
